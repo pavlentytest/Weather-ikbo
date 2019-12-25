@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -59,10 +61,23 @@ public class MainActivity extends AppCompatActivity {
 
             return null;
         }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            tv.setText(s);
+            Gson g = new Gson();
+            Weather w = g.fromJson(s,Weather.class);
+            // temperature
+            int temperature = w.getCurrent().getTemperature();
+            //w.getCurrent().getHumidity();
+            // библиотеки по работе c API: retrofit 2.0 и volley
+
+            tv.setText("Темп:"+Integer.toString(temperature));
         }
 
 
